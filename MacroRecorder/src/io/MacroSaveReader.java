@@ -52,6 +52,7 @@ public class MacroSaveReader {
 					mList.add(macro);
 				} catch (IllegalArgumentException e) {
 					lineScanner.close();
+					fileReader.close();
 					throw new IllegalArgumentException(e.getMessage());
 				}
 			}
