@@ -60,6 +60,7 @@ public class Macro {
         specialCharMap = new HashMap<Character, Integer>();
         specialCharMap.put('W', KeyEvent.VK_WINDOWS);
         specialCharMap.put('E', KeyEvent.VK_ENTER);
+		specialCharMap.put('\\', KeyEvent.VK_BACK_SLASH);
     }
 	
 	/**
@@ -163,7 +164,7 @@ public class Macro {
                     while (macroString.charAt(i) != '$' && !tooLong) {
                         sleepString += macroString.charAt(i);
                         i++;
-                        if (i >= 2000) {
+                        if (i >= 10000) {
                             tooLong = true;
                         }
                     }
@@ -208,7 +209,7 @@ public class Macro {
                         while (macroString.charAt(i) != '$' && !tooLong) {
                             sleepString += macroString.charAt(i);
                             i++;
-                            if (i >= 2000) {
+                            if (i >= 10000) {
                                 tooLong = true;
                             }
                         }
@@ -218,9 +219,12 @@ public class Macro {
                         } catch (NumberFormatException nfe) {
                             throw new IllegalArgumentException("Sleep amount near character " + (i + 1) + " is invalid.");
                         }
-                } else if (macroString.charAt(i) == SPECIAL_MARKER) {
+                } else if (macroString.charAt(i) == SPECIAL_MARKER && !shiftEnabled) {
                     i++;
                     kp.tapKey(specialCharMap.get(macroString.charAt(i)));
+                } else if (macroString.charAt(i) == SPECIAL_MARKER) {
+                    i++;
+                    kp.tapKeyShift(specialCharMap.get(macroString.charAt(i)));
                 } else if (macroString.charAt(i) == SHIFT_ENABLER) {
                     shiftEnabled = true;
                 } else if (macroString.charAt(i) == SHIFT_DISABLER) {
